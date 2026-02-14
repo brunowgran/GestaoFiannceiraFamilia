@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestão Financeira Familiar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Gestão Financeira Familiar</h1>
+    <h2>Membros da Família</h2>
+    <ul>
+        {% for member in members %}
+            <li>{{ member['name'] }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/add_member">Adicionar Membro</a>
+
+    <h2>Transações</h2>
+    <ul>
+        {% for transaction in transactions %}
+            <li>Membro ID {{ transaction['member_id'] }}: {{ transaction['amount'] }} em {{ transaction['date'] }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/add_transaction">Adicionar Transação</a>
+</body>
+</html>
