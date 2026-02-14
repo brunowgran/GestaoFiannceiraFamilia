@@ -9,13 +9,40 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+# Criar tabelas
+def create_tables():
+    conn = get_db_connection()
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS members (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL
+    )
+    ''')
+    
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS transactions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        member_id INTEGER,
+        amount REAL,
+        date TEXT,
+        FOREIGN KEY (member_id) REFERENCES members (id)
+    )
+    ''')
+    
+    conn.commit()
+    conn.close()
+
 @app.route('/')
 def index():
     conn = get_db_connection()
     members = conn.execute('SELECT * FROM members').fetchall()
     transactions = conn.execute('SELECT * FROM transactions').fetchall()
+    
+    # Calcular total de gastos
+    total_expenses = sum(transaction['amount'] for transaction in transactions)
+    
     conn.close()
-    return render_template('index.html', members=members, transactions=transactions)
+    return render_template('index.html', members=members, transactions=transactions, total_expenses=total_expenses)
 
 @app.route('/add_member', methods=('GET', 'POST'))
 def add_member():
@@ -42,4 +69,5 @@ def add_transaction():
     return render_template('add_transaction.html')
 
 if __name__ == '__main__':
+    create_tables()  # Cria as tabelas ao iniciar
     app.run(debug=True)
