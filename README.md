@@ -10,12 +10,20 @@ PARA EXECUTAR O PROGRAMA:
 
 A Estutura dediretórios, após ser gerado o banco de dados será:
 GestaoFiannceiraFamilia/
+
 ├── app.py
+
 ├── templates/
+
 │   ├── index.html
+
 │   ├── add_member.html
+
 │   ├── add_transaction.html
+
 ├── static/
+
 │   ├── style.css
+
 ├── database.db
    
